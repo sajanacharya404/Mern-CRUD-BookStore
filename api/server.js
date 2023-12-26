@@ -7,6 +7,7 @@ const app = express();
 //database
 connectDB();
 
-app.listen(8000, () => {
-  console.log("Server started");
+const port = process.env.PORT;
+app.listen(port, () => {
+  console.log(`Server started at port ${port}`);
 });
