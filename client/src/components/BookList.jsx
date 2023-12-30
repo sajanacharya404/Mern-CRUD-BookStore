@@ -33,8 +33,20 @@ const BookList = () => {
     console.log(`Edit book with ID ${bookId}`);
   };
 
-  const handleDelete = (bookId) => {
-    console.log(`Delete book with ID ${bookId}`);
+  const handleDelete = async (bookId) => {
+    try {
+      const res = await fetch(`/api/books/${bookId}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        const updatedBooks = await fetch("/api/books").then((res) =>
+          res.json()
+        );
+        setBooks(updatedBooks);
+      } else {
+        console.error("Failed to delete book:", response.statusText);
+      }
+    } catch (error) {}
   };
 
   if (loading) {
