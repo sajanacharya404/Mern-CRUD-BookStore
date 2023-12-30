@@ -43,6 +43,10 @@ export const loginUser = async (req, res, next) => {
     next(errorHandler(500, "Internal Server Error"));
   }
 };
+export const logoutUser = async (req, res, next) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "user has been logged out" });
+};
 export const getUser = async () => {};
 export const getUserById = async () => {};
 export const updateUser = async () => {};
