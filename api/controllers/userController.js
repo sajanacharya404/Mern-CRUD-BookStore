@@ -66,6 +66,20 @@ export const getUser = async (req, res, next) => {
     next(errorHandler(500, "Internal server error"));
   }
 };
-export const getUserById = async () => {};
+
+//getuserByid
+export const getUserById = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id, { password: 0 });
+    if (!user) {
+      res.status(404).json({ message: "User Not Found" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    next(errorHandler(500, "Internal server error"));
+  }
+};
 export const updateUser = async () => {};
 export const deleteUser = async () => {};
