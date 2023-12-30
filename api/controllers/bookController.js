@@ -1,17 +1,30 @@
 import Books from "../models/bookModel.js";
+import { errorHandler } from "../utlis/error.js";
 
 export const postBooks = async (req, res, next) => {
-  const books = await Books.create(req.body);
-  res.status(201).json(movies);
+  try {
+    const books = await Books.create(req.body);
+    res.status(201).json(books);
+  } catch (error) {
+    next(errorHandler(500, "Internal Server Error"));
+  }
 };
 export const getBooks = async (req, res, next) => {
-  const books = await Books.find(req.body);
-  res.status(200).json(books);
+  try {
+    const books = await Books.find(req.body);
+    res.status(200).json(books);
+  } catch (error) {
+    next(errorHandler(500, "Internal Server Error"));
+  }
 };
 export const getBooksById = async (req, res, next) => {
   const { id } = req.params;
-  const books = await Books.findById(id);
-  res.status(200).json(books);
+  try {
+    const books = await Books.findById(id);
+    res.status(200).json(books);
+  } catch (error) {
+    next(errorHandler(404, "Book Not Found"));
+  }
 };
 export const updateBooksById = async (req, res, next) => {
   const { id } = req.params;
@@ -34,18 +47,19 @@ export const updateBooksById = async (req, res, next) => {
     }
     res.status(200).json(updatedBooks);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    next(errorHandler(500, "Internal server Error"));
   }
 };
 
 export const deleteBooksById = async (req, res, next) => {
   const { id } = req.params;
   try {
-    await Books.findByIdAndDelete(id);
+    const books = await Books.findByIdAndDelete(id);
+    if (!books) {
+      next(errorHandler(404, "Book not found"));
+    }
     res.status(200).json({ message: "Book deleted" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    next(errorHandler(500, "Internal Server Error"));
   }
 };
