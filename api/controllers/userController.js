@@ -3,6 +3,7 @@ import { errorHandler } from "../utlis/error.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+//register user
 export const registerUser = async (req, res, next) => {
   const { username, email, password } = req.body;
   const hashedPassword = bcrypt.hashSync(password, 10);
@@ -18,6 +19,8 @@ export const registerUser = async (req, res, next) => {
     next(errorHandler(500, "Internal Server Error"));
   }
 };
+
+//login user
 export const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
   try {
@@ -43,11 +46,26 @@ export const loginUser = async (req, res, next) => {
     next(errorHandler(500, "Internal Server Error"));
   }
 };
+
+//logout user
 export const logoutUser = async (req, res, next) => {
   res.clearCookie("token");
   res.status(200).json({ message: "user has been logged out" });
 };
-export const getUser = async () => {};
+
+//get user
+export const getUser = async (req, res, next) => {
+  try {
+    const user = await User.find({}, { password: 0 });
+    if (!user) {
+      res.status(404).json({ message: "User Not Found" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    next(errorHandler(500, "Internal server error"));
+  }
+};
 export const getUserById = async () => {};
 export const updateUser = async () => {};
 export const deleteUser = async () => {};
