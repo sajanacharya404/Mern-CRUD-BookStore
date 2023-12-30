@@ -7,8 +7,10 @@ import {
   FaEdit,
   FaTrash,
 } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const BookList = () => {
+  const navigate = useNavigate();
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -30,7 +32,7 @@ const BookList = () => {
   }, []);
 
   const handleEdit = (bookId) => {
-    console.log(`Edit book with ID ${bookId}`);
+    navigate(`/books/${bookId}`);
   };
 
   const handleDelete = async (bookId) => {
@@ -46,7 +48,9 @@ const BookList = () => {
       } else {
         console.error("Failed to delete book:", response.statusText);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   if (loading) {
