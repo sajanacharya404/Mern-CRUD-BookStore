@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { BiBookAdd } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 const RegisterBook = () => {
+  const navigate = useNavigate();
   const [books, setBooks] = useState({
     name: "",
     description: "",
@@ -9,12 +11,30 @@ const RegisterBook = () => {
     author: "",
     price: "",
   });
+  const [loading, setLoading] = useState(false);
   const handleChange = (e) => {
     setBooks({ ...books, [e.target.id]: e.target.value });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitted Books:", books);
+    setLoading(true);
+    try {
+      const res = await fetch("/api/books", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(books),
+      });
+      const data = await res.json();
+      setLoading(false);
+      navigate("/");
+      if (data.success === false) {
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -61,7 +81,7 @@ const RegisterBook = () => {
             className="bg-blue-400 text-white p-2 rounded flex items-center"
           >
             <BiBookAdd className="mr-2" />
-            Post Book
+            {loading ? "Posting" : "Book"}
           </button>
         </form>
       </div>
