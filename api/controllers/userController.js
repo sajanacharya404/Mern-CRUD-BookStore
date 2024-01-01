@@ -81,5 +81,30 @@ export const getUserById = async (req, res, next) => {
     next(errorHandler(500, "Internal server error"));
   }
 };
-export const updateUser = async () => {};
+export const updateUser = async (req, res, next) => {
+  const { id } = req.params;
+  const { username, email, password } = req.body;
+  try {
+    if (password) {
+      password = bcrypt.hashSync(password, 10);
+    }
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          username,
+          email,
+          password,
+        },
+      },
+      { new: true }
+    );
+    if (!updatedUser) {
+      res.json(404).json({ message: "User Not found" });
+    }
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    next(errorHandler(500, "Internal server Error"));
+  }
+};
 export const deleteUser = async () => {};
