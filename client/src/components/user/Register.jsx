@@ -20,7 +20,7 @@ const RegisterPage = () => {
       const data = await res.json();
       console.log(data);
       if (res.ok) {
-        navigate("/");
+        navigate("/login");
       }
     } catch (error) {
       console.log(error);
