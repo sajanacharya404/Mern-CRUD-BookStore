@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import BookList from "./components/BookList";
 import UpdateBook from "./components/UpdateBook";
 import LoginPage from "./components/user/LoginPage";
+import RegisterPage from "./components/user/Register";
 import Navbar from "./components/Navbar";
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         <Route path="/books" element={<RegisterBook />} />
         <Route path="/books/:id" element={<UpdateBook />} />
         <Route path="/viewbooks" element={<BookList />} />
