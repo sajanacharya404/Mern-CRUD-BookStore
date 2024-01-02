@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+      console.log(data);
+      if (res.ok) {
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -16,6 +37,7 @@ const LoginPage = () => {
           placeholder="Enter email"
           id="email"
           className="w-full mt-2 p-2 border border-gray-300 rounded"
+          onChange={(e) => setEmail(e.target.value)}
         />
 
         <label htmlFor="password" className="block mt-4 text-gray-700">
@@ -26,6 +48,7 @@ const LoginPage = () => {
           placeholder="Enter password"
           id="password"
           className="w-full mt-2 p-2 border border-gray-300 rounded"
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         <button
