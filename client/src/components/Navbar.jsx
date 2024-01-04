@@ -19,6 +19,12 @@ const Navbar = () => {
   const handleRegister = () => {
     navigate("/register");
   };
+  const handleLogout = async () => {
+    await fetch("/api/logout", {
+      method: "POST",
+    });
+    navigate("/login");
+  };
 
   return (
     <div className="bg-blue-400 p-4 flex items-center justify-between">
@@ -53,6 +59,13 @@ const Navbar = () => {
         >
           <FaBook className="text-blue-400" />
           <span>Login</span>
+        </button>
+        <button
+          onClick={handleLogout}
+          className="bg-white text-blue-400 p-1 rounded flex items-center space-x-2 border"
+        >
+          <FaBook className="text-blue-400" />
+          <span>Logout</span>
         </button>
       </div>
     </div>
