@@ -40,7 +40,7 @@ export const loginUser = async (req, res, next) => {
     res
       .cookie("token", token, { httpOnly: true, SameSite: "None" })
       .status(200)
-      .json(rest);
+      .json({ rest, token });
   } catch (error) {
     console.error("Error:", error);
     next(errorHandler(500, "Internal Server Error"));
