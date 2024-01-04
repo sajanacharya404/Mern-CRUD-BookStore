@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { setToken } from "../../slices/authSlice";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -17,7 +18,8 @@ const LoginPage = () => {
       });
 
       const data = await res.json();
-      console.log(data);
+      setToken(data.token);
+      localStorage.setItem("token", data.token);
       if (res.ok) {
         navigate("/");
       }
